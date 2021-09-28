@@ -150,6 +150,7 @@ class CartItemViewSet(viewsets.ViewSet, generics.CreateAPIView, generics.ListAPI
                 cartitem.total += (cartitem.price - cartitem.quantity * product.discount)
                 cartitem.save()
 
+            cartitem.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
     #xóa item

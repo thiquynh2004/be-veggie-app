@@ -15,6 +15,8 @@ class User(AbstractUser):
 
 # class Customer(models.Model):
 class Category(models.Model):
+    class Meta:
+        ordering = ['-name']
     name = models.CharField(max_length=100, unique=True, null=False)
 
     def __str__(self):
@@ -53,9 +55,9 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_discount(self):
-    #     return self.salesPromotion.discounts
-    #
+    def get_discount(self):
+        return self.salesPromotion.discounts
+
     # def get_absolute_url(self):
     #     return reverse("core:product", kwargs={
     #         'slug': self.slug
