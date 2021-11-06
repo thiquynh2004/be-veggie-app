@@ -36,6 +36,7 @@ class SalesPromotion(models.Model):
 
 class Product(models.Model):
     class Meta:
+        ordering = ['-id']
         unique_together = ('name', 'category')
 
     category = models.ForeignKey(Category, related_name="products", on_delete=models.SET_NULL, null=True)
@@ -45,7 +46,7 @@ class Product(models.Model):
     discount = models.IntegerField(default=0)
     origin = models.CharField(max_length=50, blank=True, null=True)
     description = RichTextField(null=True, blank=True)
-    quantity = models.DecimalField(max_digits=5, decimal_places=2)
+    # quantity = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     slug = models.SlugField(null=True)
     inventory = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
     image = models.ImageField(upload_to='products/%Y/%m')
@@ -85,7 +86,8 @@ class Cart(models.Model):
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     # product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
-    update_date = models.DateTimeField(auto_now_add=True, null=True)
+    update_date = models.DateTimeField(auto_now=True, null=True)
+    total = models.IntegerField(null=True)
     is_completed = models.BooleanField(default=False)
 
     def __str__(self):
@@ -93,8 +95,8 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product, related_name="cartitems")
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name="cart_items")
+    products = models.ManyToManyField(Product)
     price = models.IntegerField()
     quantity = models.DecimalField(max_digits=5, decimal_places=2)
     total = models.IntegerField()
@@ -102,19 +104,19 @@ class CartItem(models.Model):
     def __str__(self):
         return f"Cart:{self.cart.customer.username}<=>Total=={self.total}"
 
-    def get_total_product_price(self):
-        return self.quantity * self.product.price
-
-    def get_total_product_discount(self):
-        return self.quantity * self.product.discount
-
-    def get_total_pay(self):
-        return self.get_total_product_price() - self.get_total_product_discount()
-
-    def get_total(self):
-        if self.product.discount:
-            return self.get_total_product_discount()
-        return self.get_total_product_price()
+    # def get_total_product_price(self):
+    #     return self.quantity * self.product.price
+    #
+    # def get_total_product_discount(self):
+    #     return self.quantity * self.product.discount
+    #
+    # def get_total_pay(self):
+    #     return self.get_total_product_price() - self.get_total_product_discount()
+    #
+    # def get_total(self):
+    #     if self.product.discount:
+    #         return self.get_total_product_discount()
+    #     return self.get_total_product_price()
 
 
 OrderStatus = (

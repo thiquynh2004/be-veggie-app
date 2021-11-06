@@ -1,3 +1,5 @@
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
@@ -18,7 +20,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('oauth2-info/', views.AuthInfo.as_view()),
-    path('add-to-cart', views.AddToCartView.as_view())
+    path('add-to-cart/', views.AddToCartView.as_view())
     # path('categories/', views.CategoryView.as_view())
     # re_path(r'^user/(?P<is_active>\w+)/$', UserViewSet.as_view()),
 ]
+# ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,11 +47,13 @@ INSTALLED_APPS = [
 ]
 OAUTH2_INFO = {
     "client_id": "XQKhiezbUMkGS8wXP9VPZv09qs4DIZZACY0q43H9",
-    "client_serect": "ec0jv0LpCxtbzmsR7MSXaIp8biN888fa2c5YV53ByfZIQg7pDImBrpeoUPtt3RhAChdNFmwJSLCdpqBpvktFB00FulPefx2F1f6afavEsvzwghpfWK130mochhvWXjo8"
+    "client_secret": "ec0jv0LpCxtbzmsR7MSXaIp8biN888fa2c5YV53ByfZIQg7pDImBrpeoUPtt3RhAChdNFmwJSLCdpqBpvktFB00FulPefx2F1f6afavEsvzwghpfWK130mochhvWXjo8"
 }
-# OAUTH2_PROVIDER = {
-#     'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONAuthLibCore'
-# }
+#
+OAUTH2_PROVIDER = {
+    # expect request body Content Type application/json
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore'
+}
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
@@ -147,12 +150,16 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 MEDIA_ROOT = '%s/veggieapp/static' % BASE_DIR
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/', 'static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'build/', 'staticroot/')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = 'products/'
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
+
 #
 # ]
 # Default primary key field type

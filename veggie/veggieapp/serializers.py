@@ -68,7 +68,7 @@ class ProductSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['category', 'id', 'name', 'image', 'price', 'discount', 'active', 'tags']
+        fields = ['category', 'id', 'name', 'image', 'price', 'discount', 'inventory', 'origin', 'active', 'tags']
 
 
 class SalesPromotionSerializer(ModelSerializer):
@@ -79,6 +79,7 @@ class SalesPromotionSerializer(ModelSerializer):
 
 class CartItemSerializer(ModelSerializer):
     products = ProductSerializer(many=True)
+
     # user = serializers.SlugRelatedField(slug_field='username', read_only=True)
 
     class Meta:
@@ -90,10 +91,11 @@ class CartItemSerializer(ModelSerializer):
 # giỏ hàng nè
 class CartSerializer(ModelSerializer):
     customer = serializers.SlugRelatedField(slug_field='username', read_only=True)
+    cart_items = CartItemSerializer(many=True)
 
     class Meta:
         model = Cart
-        fields = '__all__'
+        fields = ['customer', 'cart_items', 'created_date', 'update_date', 'total', 'is_completed']
         depth = 1
 
 

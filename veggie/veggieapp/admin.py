@@ -23,7 +23,7 @@ class ProductTagInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
-    list_display = ["id", "name", "price", "discount", "origin", "quantity", "active", "salesPromotion"]
+    list_display = ["id", "name", "price", "discount", "origin", "inventory", "active", "salesPromotion"]
     search_fields = ["name", "price", "discount"]
     list_filter = ["name"]
     readonly_fields = ["avatar"]
